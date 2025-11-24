@@ -10,6 +10,7 @@ import glob
 from fastapi.middleware.cors import CORSMiddleware
 from models.loader import load_model,load_scaler
 from sklearn.preprocessing import StandardScaler
+import gdown
 
 
 
@@ -17,6 +18,19 @@ app = FastAPI(
     title="FastAPI Backend",
     version="1.0.0"
 )
+
+DRIVE_FOLDER_ID = "https://drive.google.com/drive/folders/1uTp5WdRx5AxPLsA8HWm0qCTpMADVnOnz?usp=drive_link"
+
+def download_models_folder():
+    if not os.path.exists("models"):
+        os.makedirs("models")
+
+    print("Downloading models folder from Google Drive...")
+    url = f"https://drive.google.com/drive/folders/{DRIVE_FOLDER_ID}"
+    gdown.download_folder(url, output="models", quiet=False)
+    print("Models downloaded !")
+
+download_models_folder()
 
 app.add_middleware(
     CORSMiddleware,
